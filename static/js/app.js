@@ -62,8 +62,8 @@ function buildChart(samples) {
         Plotly.newPlot("bar", trace1, layout);
 
         var trace2 = {
-            x: sample_values,
-            y: otu_ids,
+            x: otu_ids,
+            y: sample_values,
             text: otu_labels,
             mode: "markers",
             marker: {
