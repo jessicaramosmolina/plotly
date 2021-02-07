@@ -13,10 +13,15 @@ d3.json("samples.json").then((samplesData) => {
 
     var firstSubject = nameIds[0];
     // console.log(firstSubject); // display the first id
-    // buildChart(firstSubject);
+    buildChart(firstSubject);
     demographicTable(firstSubject);
 
 });
+
+function optionChanged(newSelection) {
+    buildChart(newSelection);
+    demographicTable(newSelection);
+}
 
 // create Demographic table
 function demographicTable(samples) {
@@ -34,24 +39,41 @@ function demographicTable(samples) {
     })
 }
 
-function buildChart(samples) {
+
+function buildChart(samplesData) {
     d3.json("samples.json").then((samplesData) => {
-        var samples = samplesData.samples;
-        var chartID = samples.filter(s => s.id == samples);
-        var results = chartID[0];
-        var sample_values = results.sample_values;
-        var otu_ids = results.otu_ids;
-        var otu_labels = results.otu_lables;
+        var sample_values = samplesData.sample_values;
+        var otu_ids = samplesData.otu_ids;
+        var otu_labels = samplesData.otu_labels;
         var trace1 = {
-            x: otu_ids,
-            y: sample_values,
-            text: otu_lables,
+            x: sample_values.slice(0, 10).reverse(),
+            y: otu_ids.slice(0, 10).map(d=> `OTU ${d}`),
+            text: otu_labels.slice(0, 10).reverse(),
+            type: "bar",
+            orientation: "h"
+        };
+        var layout = {
+            title: "Top 10 UTOs Results"
+        };
+
+        Plotly.newPlot("bar", trace1, layout);
+
+        var trace2 = {
+            x: sample_values,
+            y: otu_ids,
+            text: otu_labels,
             mode: "markers",
-        }
-    })
+            marker: {
+                size: sample_values,
+                color: otu_ids
+            }
+        };
+        var layout = {
+            title: "Top 10 OTUs Results"
+        };
+
+        Plotly.newPlot("bubble", trace2, layout);
+
+    });
 }
 
-function optionChanged(newSelection) {
-    buildChart(newSelection);
-    demographicTable(newSelection);
-}
