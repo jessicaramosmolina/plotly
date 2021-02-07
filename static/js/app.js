@@ -34,9 +34,9 @@ function demographicTable(samples) {
         var metaPanel = d3.select("#sample-metadata");
         metaPanel.html("");
         Object.entries(results).forEach(([key, value]) => {
-            metaPanel.append("h6").text(`${key.toUpperCase()}: ${value}`)
-        })
-    })
+            metaPanel.append("h6").text(`${key.toUpperCase()}: ${value}`);
+        });
+    });
 }
 
 
