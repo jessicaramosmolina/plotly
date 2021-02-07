@@ -40,11 +40,14 @@ function demographicTable(samples) {
 }
 
 
-function buildChart(samplesData) {
+function buildChart(samples) { 
     d3.json("samples.json").then((samplesData) => {
-        var sample_values = samplesData.sample_values;
-        var otu_ids = samplesData.otu_ids;
-        var otu_labels = samplesData.otu_labels;
+        // var sample_values = samplesData.sample_values;
+        var resultArray = samples.filter(sampleObj => sampleObj.id == sample);
+        var result = resultArray[0]; 
+        var otu_ids = result.otu_ids;
+        var otu_labels = result.otu_labels;
+        var sample_values = result.sample_values;
         var trace1 = {
             x: sample_values.slice(0, 10).reverse(),
             y: otu_ids.slice(0, 10).map(d=> `OTU ${d}`),
